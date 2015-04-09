@@ -27,7 +27,10 @@ public class Extraction {
 				
 		String filePath = "gps.dat";
 		List<Trace> gps = ReadWriteTrace.readFile(filePath);
-	
+
+        //Starting point from where the scan begins
+        //Used only while doing a generic scan
+
 		// Lat/long of ComputerScience department
 		// String baseLat = "43.0713085";
 		// String baseLng = "-89.40631809999999";
@@ -38,29 +41,11 @@ public class Extraction {
 		
 		HashMap<String, String> globalMap = new HashMap<String, String>();
 		
-		// String res = Extraction.FetchHTTPResponse(baseLat, baseLng, topLat,
-		// baseLng);
-		// "43.07334729999999","-89.45303319999999");
-		
-		// HashMap stepsMap = JSONParser.parseJSON(res);
 		// File to which the intersection points are updated, along with
 		// confidence value
 		File file = new File("IntersectionGPSData.txt");
 		file.createNewFile();
 		FileWriter writer = new FileWriter(file);
-		
-		/*
-		* String origLat = baseLat; String origLng = baseLng;
-		* 
-		* //System.out.println("$$DEBUG$$: origLng = " + origLng);
-		*
-		* //System.out.println("Trying original route!!");
-		* 
-		* //String res = Extraction.FetchHTTPResponse(baseLat, baseLng,
-		* "43.07334729999999","-89.45303319999999"); //HashMap stepsMap =
-		* JSONParser.parseJSON(res); //globalMap =
-		* validateIntersection(stepsMap, writer, globalMap, "nothing");
-		*/
 		
 		processGPS(writer, globalMap,gps);
 	
@@ -123,7 +108,10 @@ public class Extraction {
 	}
 	
 	public static HashMap processGPS(FileWriter writer, HashMap globalMap, List<Trace> gps) throws IOException {
-	
+
+        /* Function to determine the intersections given a GPS values of a path traveresed by the car */
+        /* Generic code for general intersection extraction is commented out - to be added as a switch case later */
+        
 		FileReader fr = new FileReader("gps.dat");
 		BufferedReader reader = new BufferedReader(fr);
 		String line = null;
@@ -205,7 +193,6 @@ public class Extraction {
 					Double degree = direction(dblPrevLat, dblPrevLng, dblLat, dblLng);
 					//System.out.println("Degree is : " + degree);
 					globalMap = VerifyRightLeftPoints(prevLat, prevLng, lat, lng, writer,globalMap, degree, gps);
-					//return globalMap;
 				}
 			} 
 	
